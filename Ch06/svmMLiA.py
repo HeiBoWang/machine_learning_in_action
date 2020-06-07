@@ -49,12 +49,12 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
                 else:
                     L = max(0, alphas[j] + alphas[i] - C)
                     H = min(C, alphas[j] + alphas[i])
-                if L==H: print "L==H"; continue
+                if L==H: print ("L==H"); continue
                 eta = 2.0 * dataMatrix[i,:]*dataMatrix[j,:].T - dataMatrix[i,:]*dataMatrix[i,:].T - dataMatrix[j,:]*dataMatrix[j,:].T
-                if eta >= 0: print "eta>=0"; continue
+                if eta >= 0: print ("eta>=0"); continue
                 alphas[j] -= labelMat[j]*(Ei - Ej)/eta
                 alphas[j] = clipAlpha(alphas[j],H,L)
-                if (abs(alphas[j] - alphaJold) < 0.00001): print "j not moving enough"; continue
+                if (abs(alphas[j] - alphaJold) < 0.00001): print ("j not moving enough"); continue
                 alphas[i] += labelMat[j]*labelMat[i]*(alphaJold - alphas[j])#update i by the same amount as j
                                                                         #the update is in the oppostie direction
                 b1 = b - Ei- labelMat[i]*(alphas[i]-alphaIold)*dataMatrix[i,:]*dataMatrix[i,:].T - labelMat[j]*(alphas[j]-alphaJold)*dataMatrix[i,:]*dataMatrix[j,:].T
@@ -63,10 +63,10 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
                 elif (0 < alphas[j]) and (C > alphas[j]): b = b2
                 else: b = (b1 + b2)/2.0
                 alphaPairsChanged += 1
-                print "iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged)
+                print ("iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged))
         if (alphaPairsChanged == 0): iter += 1
         else: iter = 0
-        print "iteration number: %d" % iter
+        print ("iteration number: %d" % iter)
     return b,alphas
 
 def kernelTrans(X, A, kTup): #calc the kernel or transform data to a higher dimensional space
@@ -159,17 +159,17 @@ def smoP(dataMatIn, classLabels, C, toler, maxIter,kTup=('lin', 0)):    #full Pl
         if entireSet:   #go over all
             for i in range(oS.m):        
                 alphaPairsChanged += innerL(i,oS)
-                print "fullSet, iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged)
+                print ("fullSet, iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged))
             iter += 1
         else:#go over non-bound (railed) alphas
             nonBoundIs = nonzero((oS.alphas.A > 0) * (oS.alphas.A < C))[0]
             for i in nonBoundIs:
                 alphaPairsChanged += innerL(i,oS)
-                print "non-bound, iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged)
+                print ("non-bound, iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged))
             iter += 1
         if entireSet: entireSet = False #toggle entire set loop
         elif (alphaPairsChanged == 0): entireSet = True  
-        print "iteration number: %d" % iter
+        print ("iteration number: %d" % iter)
     return oS.b,oS.alphas
 
 def calcWs(alphas,dataArr,classLabels):
@@ -187,14 +187,14 @@ def testRbf(k1=1.3):
     svInd=nonzero(alphas.A>0)[0]
     sVs=datMat[svInd] #get matrix of only support vectors
     labelSV = labelMat[svInd];
-    print "there are %d Support Vectors" % shape(sVs)[0]
+    print ("there are %d Support Vectors" % shape(sVs)[0])
     m,n = shape(datMat)
     errorCount = 0
     for i in range(m):
         kernelEval = kernelTrans(sVs,datMat[i,:],('rbf', k1))
         predict=kernelEval.T * multiply(labelSV,alphas[svInd]) + b
         if sign(predict)!=sign(labelArr[i]): errorCount += 1
-    print "the training error rate is: %f" % (float(errorCount)/m)
+    print ("the training error rate is: %f" % (float(errorCount)/m))
     dataArr,labelArr = loadDataSet('testSetRBF2.txt')
     errorCount = 0
     datMat=mat(dataArr); labelMat = mat(labelArr).transpose()
@@ -203,7 +203,7 @@ def testRbf(k1=1.3):
         kernelEval = kernelTrans(sVs,datMat[i,:],('rbf', k1))
         predict=kernelEval.T * multiply(labelSV,alphas[svInd]) + b
         if sign(predict)!=sign(labelArr[i]): errorCount += 1    
-    print "the test error rate is: %f" % (float(errorCount)/m)    
+    print ("the test error rate is: %f" % (float(errorCount)/m))    
     
 def img2vector(filename):
     returnVect = zeros((1,1024))
@@ -236,14 +236,14 @@ def testDigits(kTup=('rbf', 10)):
     svInd=nonzero(alphas.A>0)[0]
     sVs=datMat[svInd] 
     labelSV = labelMat[svInd];
-    print "there are %d Support Vectors" % shape(sVs)[0]
+    print ("there are %d Support Vectors" % shape(sVs)[0])
     m,n = shape(datMat)
     errorCount = 0
     for i in range(m):
         kernelEval = kernelTrans(sVs,datMat[i,:],kTup)
         predict=kernelEval.T * multiply(labelSV,alphas[svInd]) + b
         if sign(predict)!=sign(labelArr[i]): errorCount += 1
-    print "the training error rate is: %f" % (float(errorCount)/m)
+    print ("the training error rate is: %f" % (float(errorCount)/m))
     dataArr,labelArr = loadImages('testDigits')
     errorCount = 0
     datMat=mat(dataArr); labelMat = mat(labelArr).transpose()
@@ -252,7 +252,7 @@ def testDigits(kTup=('rbf', 10)):
         kernelEval = kernelTrans(sVs,datMat[i,:],kTup)
         predict=kernelEval.T * multiply(labelSV,alphas[svInd]) + b
         if sign(predict)!=sign(labelArr[i]): errorCount += 1    
-    print "the test error rate is: %f" % (float(errorCount)/m) 
+    print ("the test error rate is: %f" % (float(errorCount)/m) )
 
 
 '''#######********************************
@@ -333,15 +333,15 @@ def smoPK(dataMatIn, classLabels, C, toler, maxIter):    #full Platt SMO
         if entireSet:   #go over all
             for i in range(oS.m):        
                 alphaPairsChanged += innerL(i,oS)
-                print "fullSet, iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged)
+                print ("fullSet, iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged))
             iter += 1
         else:#go over non-bound (railed) alphas
             nonBoundIs = nonzero((oS.alphas.A > 0) * (oS.alphas.A < C))[0]
             for i in nonBoundIs:
                 alphaPairsChanged += innerL(i,oS)
-                print "non-bound, iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged)
+                print ("non-bound, iter: %d i:%d, pairs changed %d" % (iter,i,alphaPairsChanged))
             iter += 1
         if entireSet: entireSet = False #toggle entire set loop
         elif (alphaPairsChanged == 0): entireSet = True  
-        print "iteration number: %d" % iter
+        print ("iteration number: %d" % iter)
     return oS.b,oS.alphas

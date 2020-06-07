@@ -9,9 +9,11 @@ def loadDataSet(fileName):      #general function to parse tab -delimited floats
     dataMat = []                #assume last column is target value
     fr = open(fileName)
     for line in fr.readlines():
+        temp=[]
         curLine = line.strip().split('\t')
-        fltLine = map(float,curLine) #map all elements to float()
-        dataMat.append(fltLine)
+        temp.append(float(curLine[0]))
+        temp.append(float(curLine[1]))
+        dataMat.append(temp)
     return dataMat
 
 def distEclud(vecA, vecB):
@@ -42,7 +44,7 @@ def kMeans(dataSet, k, distMeas=distEclud, createCent=randCent):
                     minDist = distJI; minIndex = j
             if clusterAssment[i,0] != minIndex: clusterChanged = True
             clusterAssment[i,:] = minIndex,minDist**2
-        print centroids
+        print (centroids)
         for cent in range(k):#recalculate centroids
             ptsInClust = dataSet[nonzero(clusterAssment[:,0].A==cent)[0]]#get all the point in this cluster
             centroids[cent,:] = mean(ptsInClust, axis=0) #assign centroid to mean 
@@ -62,7 +64,7 @@ def biKmeans(dataSet, k, distMeas=distEclud):
             centroidMat, splitClustAss = kMeans(ptsInCurrCluster, 2, distMeas)
             sseSplit = sum(splitClustAss[:,1])#compare the SSE to the currrent minimum
             sseNotSplit = sum(clusterAssment[nonzero(clusterAssment[:,0].A!=i)[0],1])
-            print "sseSplit, and notSplit: ",sseSplit,sseNotSplit
+            print ("sseSplit, and notSplit: ",sseSplit,sseNotSplit)
             if (sseSplit + sseNotSplit) < lowestSSE:
                 bestCentToSplit = i
                 bestNewCents = centroidMat
@@ -70,8 +72,8 @@ def biKmeans(dataSet, k, distMeas=distEclud):
                 lowestSSE = sseSplit + sseNotSplit
         bestClustAss[nonzero(bestClustAss[:,0].A == 1)[0],0] = len(centList) #change 1 to 3,4, or whatever
         bestClustAss[nonzero(bestClustAss[:,0].A == 0)[0],0] = bestCentToSplit
-        print 'the bestCentToSplit is: ',bestCentToSplit
-        print 'the len of bestClustAss is: ', len(bestClustAss)
+        print ('the bestCentToSplit is: ',bestCentToSplit)
+        print ('the len of bestClustAss is: ', len(bestClustAss))
         centList[bestCentToSplit] = bestNewCents[0,:].tolist()[0]#replace a centroid with two best centroids 
         centList.append(bestNewCents[1,:].tolist()[0])
         clusterAssment[nonzero(clusterAssment[:,0].A == bestCentToSplit)[0],:]= bestClustAss#reassign new clusters, and SSE
@@ -87,7 +89,7 @@ def geoGrab(stAddress, city):
     params['location'] = '%s %s' % (stAddress, city)
     url_params = urllib.urlencode(params)
     yahooApi = apiStem + url_params      #print url_params
-    print yahooApi
+    print (yahooApi)
     c=urllib.urlopen(yahooApi)
     return json.loads(c.read())
 
@@ -101,9 +103,9 @@ def massPlaceFind(fileName):
         if retDict['ResultSet']['Error'] == 0:
             lat = float(retDict['ResultSet']['Results'][0]['latitude'])
             lng = float(retDict['ResultSet']['Results'][0]['longitude'])
-            print "%s\t%f\t%f" % (lineArr[0], lat, lng)
+            print ("%s\t%f\t%f" % (lineArr[0], lat, lng))
             fw.write('%s\t%f\t%f\n' % (line, lat, lng))
-        else: print "error fetching"
+        else: print ("error fetching")
         sleep(1)
     fw.close()
     

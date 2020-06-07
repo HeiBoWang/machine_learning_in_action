@@ -26,7 +26,6 @@ def setOfWords2Vec(vocabList, inputSet):
     for word in inputSet:
         if word in vocabList:
             returnVec[vocabList.index(word)] = 1
-        else: print "the word: %s is not in my Vocabulary!" % word
     return returnVec
 
 def trainNB0(trainMatrix,trainCategory):
@@ -70,10 +69,10 @@ def testingNB():
     p0V,p1V,pAb = trainNB0(array(trainMat),array(listClasses))
     testEntry = ['love', 'my', 'dalmation']
     thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
-    print testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb)
+    print (testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb))
     testEntry = ['stupid', 'garbage']
     thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
-    print testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb)
+    print (testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb))
 
 def textParse(bigString):    #input is big string, #output is word list
     import re
@@ -107,8 +106,8 @@ def spamTest():
         wordVector = bagOfWords2VecMN(vocabList, docList[docIndex])
         if classifyNB(array(wordVector),p0V,p1V,pSpam) != classList[docIndex]:
             errorCount += 1
-            print "classification error",docList[docIndex]
-    print 'the error rate is: ',float(errorCount)/len(testSet)
+            print ("classification error",docList[docIndex])
+    print ('the error rate is: ',float(errorCount)/len(testSet))
     #return vocabList,fullText
 
 def calcMostFreq(vocabList,fullText):
@@ -151,7 +150,7 @@ def localWords(feed1,feed0):
         wordVector = bagOfWords2VecMN(vocabList, docList[docIndex])
         if classifyNB(array(wordVector),p0V,p1V,pSpam) != classList[docIndex]:
             errorCount += 1
-    print 'the error rate is: ',float(errorCount)/len(testSet)
+    print ('the error rate is: ',float(errorCount)/len(testSet))
     return vocabList,p0V,p1V
 
 def getTopWords(ny,sf):
@@ -162,10 +161,11 @@ def getTopWords(ny,sf):
         if p0V[i] > -6.0 : topSF.append((vocabList[i],p0V[i]))
         if p1V[i] > -6.0 : topNY.append((vocabList[i],p1V[i]))
     sortedSF = sorted(topSF, key=lambda pair: pair[1], reverse=True)
-    print "SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**"
+    print ("SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**")
     for item in sortedSF:
-        print item[0]
+        print (item[0])
     sortedNY = sorted(topNY, key=lambda pair: pair[1], reverse=True)
-    print "NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**"
+    print ("NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**")
     for item in sortedNY:
-        print item[0]
+        print (item[0])
+

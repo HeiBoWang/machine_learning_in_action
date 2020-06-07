@@ -16,7 +16,7 @@ def loadSimpData():
 
 def loadDataSet(fileName):      #general function to parse tab -delimited floats
     numFeat = len(open(fileName).readline().split('\t')) #get number of fields 
-    dataMat = []; labelMat = []
+      dataMat = []; labelMat = []
     fr = open(fileName)
     for line in fr.readlines():
         lineArr =[]
