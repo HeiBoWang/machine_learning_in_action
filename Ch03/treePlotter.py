@@ -71,13 +71,13 @@ def createPlot(inTree):
     plotTree(inTree, (0.5,1.0), '')
     plt.show()
 
-#def createPlot():
-#    fig = plt.figure(1, facecolor='white')
-#    fig.clf()
-#    createPlot.ax1 = plt.subplot(111, frameon=False) #ticks for demo puropses 
-#    plotNode('a decision node', (0.5, 0.1), (0.1, 0.5), decisionNode)
-#    plotNode('a leaf node', (0.8, 0.1), (0.3, 0.8), leafNode)
-#    plt.show()
+def createPlot1():
+   fig = plt.figure(1, facecolor='white')
+   fig.clf()
+   createPlot.ax1 = plt.subplot(111, frameon=False) #ticks for demo puropses
+   plotNode('a decision node', (0.5, 0.1), (0.1, 0.5), decisionNode)
+   plotNode('a leaf node', (0.8, 0.1), (0.3, 0.8), leafNode)
+   plt.show()
 
 def retrieveTree(i):
     listOfTrees =[{'no surfacing': {0: 'no', 1: {'flippers': {0: 'no', 1: 'yes'}}}},
@@ -85,4 +85,7 @@ def retrieveTree(i):
                   ]
     return listOfTrees[i]
 
-#createPlot(thisTree)
+# createPlot()
+# mTree = retrieveTree(0)
+mTree = retrieveTree(1)
+createPlot(mTree)
