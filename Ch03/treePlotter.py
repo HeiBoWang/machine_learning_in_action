@@ -1,8 +1,9 @@
+
+# coding=utf-8
 '''
 Created on Oct 14, 2010
-
-@author: Peter Harrington
 '''
+
 import matplotlib.pyplot as plt
 
 decisionNode = dict(boxstyle="sawtooth", fc="0.8")
@@ -34,7 +35,7 @@ def plotNode(nodeTxt, centerPt, parentPt, nodeType):
     createPlot.ax1.annotate(nodeTxt, xy=parentPt,  xycoords='axes fraction',
              xytext=centerPt, textcoords='axes fraction',
              va="center", ha="center", bbox=nodeType, arrowprops=arrow_args )
-    
+
 def plotMidText(cntrPt, parentPt, txtString):
     xMid = (parentPt[0]-cntrPt[0])/2.0 + cntrPt[0]
     yMid = (parentPt[1]-cntrPt[1])/2.0 + cntrPt[1]
@@ -50,7 +51,7 @@ def plotTree(myTree, parentPt, nodeTxt):#if the first key tells you what feat wa
     secondDict = myTree[firstStr]
     plotTree.yOff = plotTree.yOff - 1.0/plotTree.totalD
     for key in secondDict.keys():
-        if type(secondDict[key]).__name__=='dict':#test to see if the nodes are dictonaires, if not they are leaf nodes   
+        if type(secondDict[key]).__name__=='dict':#test to see if the nodes are dictonaires, if not they are leaf nodes
             plotTree(secondDict[key],cntrPt,str(key))        #recursion
         else:   #it's a leaf node print the leaf node
             plotTree.xOff = plotTree.xOff + 1.0/plotTree.totalW
@@ -64,7 +65,7 @@ def createPlot(inTree):
     fig.clf()
     axprops = dict(xticks=[], yticks=[])
     createPlot.ax1 = plt.subplot(111, frameon=False, **axprops)    #no ticks
-    #createPlot.ax1 = plt.subplot(111, frameon=False) #ticks for demo puropses 
+    #createPlot.ax1 = plt.subplot(111, frameon=False) #ticks for demo puropses
     plotTree.totalW = float(getNumLeafs(inTree))
     plotTree.totalD = float(getTreeDepth(inTree))
     plotTree.xOff = -0.5/plotTree.totalW; plotTree.yOff = 1.0;
@@ -81,11 +82,22 @@ def createPlot1():
 
 def retrieveTree(i):
     listOfTrees =[{'no surfacing': {0: 'no', 1: {'flippers': {0: 'no', 1: 'yes'}}}},
-                  {'no surfacing': {0: 'no', 1: {'flippers': {0: {'head': {0: 'no', 1: 'yes'}}, 1: 'no'}}}}
+                  {'no surfacing': {0: 'no', 1: {'flippers': {0: {'head': {0: 'no', 1: 'yes'}}, 1: 'no'}}}},
+                  {'tearRate': {'reduced': 'no lenses', 'normal': {'astigmatic': {'yes': {
+                      'prescript': {'hyper': {'age': {'pre': 'no lenses', 'presbyopic': 'no lenses', 'young': 'hard'}},
+                                    'myope': 'hard'}}, 'no': {
+                      'age': {'pre': 'soft', 'presbyopic': {'prescript': {'hyper': 'soft', 'myope': 'no lenses'}},
+                              'young': 'soft'}}}}}},
+
                   ]
     return listOfTrees[i]
 
+# -------画图--------------
 # createPlot()
 # mTree = retrieveTree(0)
-mTree = retrieveTree(1)
+mTree = retrieveTree(2)
 createPlot(mTree)
+
+
+
+

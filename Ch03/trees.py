@@ -1,7 +1,5 @@
 
-
 # coding=utf-8
-# -*- coding: utf-8 -*-
 
 '''
 Created on Oct 12, 2010
@@ -10,6 +8,8 @@ Decision Tree Source Code for Machine Learning in Action Ch. 3
 '''
 from math import log
 import operator
+import matplotlib.pyplot as plt
+
 
 # 初始化数据集
 def createDataSet():
@@ -178,4 +178,20 @@ def grabTree(filename):
     import pickle
     fr = open(filename)
     return pickle.load(fr)
-    
+
+def retrieveTree(i):
+    listOfTrees =[{'tearRate': {'reduced': 'no lenses', 'normal': {'astigmatic': {'yes': {'prescript': {'hyper': {'age': {'pre': 'no lenses', 'presbyopic': 'no lenses', 'young': 'hard'}}, 'myope': 'hard'}}, 'no': {'age': {'pre': 'soft', 'presbyopic': {'prescript': {'hyper': 'soft', 'myope': 'no lenses'}}, 'young': 'soft'}}}}}}
+                  ]
+    return listOfTrees[i]
+
+# --------眼镜蛇预测图------------------
+def drawLensesTree():
+    fr = open('lenses.txt')
+    lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+    lensesLabels = ['age', 'prescript', 'astigmatic', 'tearRate']
+    lensesTree = createTree(lenses, lensesLabels)
+    print lensesTree
+
+
+drawLensesTree()
+
