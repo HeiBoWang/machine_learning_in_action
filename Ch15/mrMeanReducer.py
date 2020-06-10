@@ -1,11 +1,11 @@
-'''
-Created on Feb 21, 2011
 
-@author: Peter
-'''
+# coding=utf-8
 import sys
 from numpy import mat, mean, power
 
+"""
+分布式计算均值和方差的reducer
+"""
 def read_input(file):
     for line in file:
         yield line.rstrip()
@@ -32,3 +32,5 @@ meanSq = cumSumSq/cumN
 #output size, mean, mean(square values)
 print "%d\t%f\t%f" % (cumN, mean, meanSq)
 print >> sys.stderr, "report: still alive"
+
+#  windows dos 命令： %python mrMeanMapper.py < inputFile.txt | python mrMeanReducer.py
